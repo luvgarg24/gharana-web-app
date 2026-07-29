@@ -1,24 +1,29 @@
-import { Platform } from 'react-native';
+// (Platform import removed — fonts are now bundled TTFs, no system fallbacks.)
 
 export const colors = {
-  cream: '#F5F0E8',
-  earth: '#2C1810',
-  saffron: '#E8873A',
-  saffronDark: '#C9722A',
-  gold: '#C9972A',
-  jade: '#2D6A4F',
-  jadeLight: '#3A8A65',
-  dust: '#8B7355',
-  dustLight: '#A89680',
-  white: '#FEFCF8',
+  cream: '#FBF8F1',
+  creamDeep: '#F1E8D8',
+  earth: '#241A10',
+  espresso: '#3A2A1B',
+  saffron: '#C9682C',
+  saffronDark: '#A84E1F',
+  gold: '#B0862B',
+  goldSoft: '#D9B25A',
+  jade: '#1E5A43',
+  jadeLight: '#2E7357',
+  dust: '#8A7960',
+  dustLight: '#B4A489',
+  white: '#FFFEFB',
   charcoal: '#1A1A1A',
-  border: '#EAE4D9',
-  divider: '#EAE4D9',
-  error: '#B03A2E',
+  border: '#ECE3D3',
+  divider: '#ECE3D3',
+  error: '#A5342B',
   overlay: 'rgba(28, 20, 12, 0.55)',
-  saffronTint: 'rgba(232, 135, 58, 0.12)',
-  jadeTint: 'rgba(45, 106, 79, 0.10)',
-  earthMuted: 'rgba(44, 24, 16, 0.6)',
+  saffronTint: 'rgba(201, 104, 44, 0.12)',
+  jadeTint: 'rgba(30, 90, 67, 0.10)',
+  goldTint: 'rgba(176, 134, 43, 0.14)',
+  creamTint: 'rgba(255, 254, 251, 0.85)',
+  earthMuted: 'rgba(36, 26, 16, 0.6)',
 };
 
 export const spacing = {
@@ -39,28 +44,34 @@ export const radius = {
   pill: 999,
 };
 
-// System fonts that best approximate Cormorant Garamond and Inter.
+// Premium pairing: Playfair Display (display) + Plus Jakarta Sans (body/UI).
+// Weights are baked into distinct family names — never combine with fontWeight.
 export const fonts = {
-  display: Platform.select({ ios: 'Georgia', android: 'serif', default: 'Georgia' }) as string,
-  displayItalic: Platform.select({ ios: 'Georgia-Italic', android: 'serif', default: 'Georgia' }) as string,
-  body: Platform.select({ ios: 'System', android: 'sans-serif', default: 'System' }) as string,
-  bodyMedium: Platform.select({ ios: 'System', android: 'sans-serif-medium', default: 'System' }) as string,
+  display: 'PlayfairDisplay_600SemiBold',
+  displayBold: 'PlayfairDisplay_700Bold',
+  displayMedium: 'PlayfairDisplay_500Medium',
+  displayItalic: 'PlayfairDisplay_700BoldItalic',
+  body: 'PlusJakartaSans_400Regular',
+  bodyMedium: 'PlusJakartaSans_500Medium',
+  bodySemibold: 'PlusJakartaSans_600SemiBold',
+  bodyBold: 'PlusJakartaSans_700Bold',
 };
 
 export const type = {
-  h1: { fontFamily: fonts.display, fontWeight: '700' as const, fontSize: 34, lineHeight: 40, color: colors.earth, letterSpacing: 0.2 },
-  h2: { fontFamily: fonts.display, fontWeight: '700' as const, fontSize: 26, lineHeight: 32, color: colors.earth },
-  h3: { fontFamily: fonts.display, fontWeight: '700' as const, fontSize: 22, lineHeight: 28, color: colors.earth },
-  h4: { fontFamily: fonts.display, fontWeight: '700' as const, fontSize: 18, lineHeight: 24, color: colors.earth },
-  body: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: colors.earth },
-  bodyDim: { fontFamily: fonts.body, fontSize: 14, lineHeight: 20, color: colors.dust },
+  h1: { fontFamily: fonts.displayBold, fontSize: 32, lineHeight: 38, color: colors.earth, letterSpacing: 0.2 },
+  h2: { fontFamily: fonts.displayBold, fontSize: 26, lineHeight: 32, color: colors.earth },
+  h3: { fontFamily: fonts.display, fontSize: 21, lineHeight: 28, color: colors.earth },
+  h4: { fontFamily: fonts.display, fontSize: 17, lineHeight: 23, color: colors.earth },
+  body: { fontFamily: fonts.body, fontSize: 14.5, lineHeight: 21, color: colors.earth },
+  bodyMed: { fontFamily: fonts.bodyMedium, fontSize: 14.5, lineHeight: 21, color: colors.earth },
+  bodyDim: { fontFamily: fonts.body, fontSize: 13.5, lineHeight: 20, color: colors.dust },
   small: { fontFamily: fonts.body, fontSize: 12, lineHeight: 16, color: colors.dust },
-  price: { fontFamily: fonts.bodyMedium, fontWeight: '700' as const, fontSize: 16, color: colors.earth },
+  smallMed: { fontFamily: fonts.bodyMedium, fontSize: 12, lineHeight: 16, color: colors.dust },
+  price: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.earth },
   label: {
-    fontFamily: fonts.bodyMedium,
-    fontWeight: '600' as const,
-    fontSize: 10,
-    letterSpacing: 1.6, // ~0.12em for 10px
+    fontFamily: fonts.bodySemibold,
+    fontSize: 10.5,
+    letterSpacing: 1.4,
     textTransform: 'uppercase' as const,
     color: colors.saffronDark,
   },

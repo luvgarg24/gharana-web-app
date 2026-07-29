@@ -44,9 +44,22 @@ const iconFontMap = (): Record<string, string> =>
     Object.entries(ICON_FAMILIES).map(([key, file]) => [key, cdnUrl(file)]),
   );
 
+// Bundled premium brand fonts (Playfair Display + Plus Jakarta Sans).
+const appFontMap = {
+  PlayfairDisplay_500Medium: require("../../assets/fonts/PlayfairDisplay-Medium.ttf"),
+  PlayfairDisplay_600SemiBold: require("../../assets/fonts/PlayfairDisplay-SemiBold.ttf"),
+  PlayfairDisplay_700Bold: require("../../assets/fonts/PlayfairDisplay-Bold.ttf"),
+  PlayfairDisplay_700BoldItalic: require("../../assets/fonts/PlayfairDisplay-BoldItalic.ttf"),
+  PlusJakartaSans_400Regular: require("../../assets/fonts/PlusJakartaSans-Regular.ttf"),
+  PlusJakartaSans_500Medium: require("../../assets/fonts/PlusJakartaSans-Medium.ttf"),
+  PlusJakartaSans_600SemiBold: require("../../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+  PlusJakartaSans_700Bold: require("../../assets/fonts/PlusJakartaSans-Bold.ttf"),
+};
+
 export const useIconFonts = (): readonly [boolean, Error | null] =>
-  useFonts(
-    Constants.executionEnvironment === ExecutionEnvironment.StoreClient
+  useFonts({
+    ...appFontMap,
+    ...(Constants.executionEnvironment === ExecutionEnvironment.StoreClient
       ? iconFontMap()
-      : {},
-  );
+      : {}),
+  });

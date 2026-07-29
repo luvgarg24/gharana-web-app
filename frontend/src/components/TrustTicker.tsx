@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
-import { colors, spacing } from '@/src/theme/tokens';
+import { colors, spacing, fonts } from '@/src/theme/tokens';
 
 const CLAIMS = [
   '• ZERO ADULTERATION',
@@ -41,9 +41,9 @@ const styles = StyleSheet.create({
   },
   row: { flexDirection: 'row' },
   text: {
-    color: colors.white,
+    color: colors.goldSoft,
     letterSpacing: 2.4,
     fontSize: 10,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
   },
 });

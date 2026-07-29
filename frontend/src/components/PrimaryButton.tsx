@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet, ViewStyle } from 'react-native';
-import { colors, radius, spacing, type as t } from '@/src/theme/tokens';
+import { colors, radius, spacing, fonts, type as t } from '@/src/theme/tokens';
 
 type Props = {
   title: string;
@@ -56,5 +56,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  label: { ...t.body, color: colors.white, fontWeight: '600', fontSize: 15, letterSpacing: 0.3 },
+  label: { ...t.body, color: colors.white, fontFamily: fonts.bodyBold, fontSize: 15, letterSpacing: 0.3 },
 });

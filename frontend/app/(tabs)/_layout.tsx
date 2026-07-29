@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import { View, Text, StyleSheet } from 'react-native';
 import { useCart } from '@/src/context/CartContext';
-import { colors } from '@/src/theme/tokens';
+import { colors, fonts } from '@/src/theme/tokens';
 
 export default function TabsLayout() {
   return (
@@ -18,7 +18,7 @@ export default function TabsLayout() {
           paddingTop: 6,
           height: 68,
         },
-        tabBarLabelStyle: { fontSize: 10, letterSpacing: 0.6, fontWeight: '600' },
+        tabBarLabelStyle: { fontSize: 10.5, letterSpacing: 0.4, fontFamily: fonts.bodySemibold },
       }}
     >
       <Tabs.Screen
@@ -71,5 +71,5 @@ const styles = StyleSheet.create({
     minWidth: 16, height: 16, borderRadius: 8, paddingHorizontal: 4,
     alignItems: 'center', justifyContent: 'center',
   },
-  badgeText: { color: colors.white, fontSize: 9, fontWeight: '700' },
+  badgeText: { color: colors.white, fontSize: 9, fontFamily: fonts.bodyBold },
 });

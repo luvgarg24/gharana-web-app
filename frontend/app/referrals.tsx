@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import * as Clipboard from 'expo-clipboard';
-import { colors, radius, spacing, type as t } from '@/src/theme/tokens';
+import { colors, radius, spacing, fonts, type as t } from '@/src/theme/tokens';
 import { useAuth } from '@/src/context/AuthContext';
 import { PrimaryButton } from '@/src/components/PrimaryButton';
 
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   title: { ...t.h3, fontStyle: 'italic' },
   hero: { backgroundColor: colors.earth, padding: spacing.xl, borderRadius: radius.lg },
   heroLabel: { color: colors.saffron, fontSize: 10, letterSpacing: 2, fontWeight: '700' },
-  heroTitle: { color: colors.white, fontFamily: 'Georgia', fontStyle: 'italic', fontSize: 28, fontWeight: '700', marginTop: 8 },
+  heroTitle: { color: colors.white, fontFamily: fonts.displayItalic, fontSize: 28, marginTop: 8 },
   heroBody: { color: colors.cream, opacity: 0.8, marginTop: 6, fontSize: 13, lineHeight: 20 },
   codeBox: { marginTop: spacing.lg, backgroundColor: colors.white, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.saffron, borderStyle: 'dashed', alignItems: 'center' },
   codeLabel: { fontSize: 10, letterSpacing: 1.6, fontWeight: '700', color: colors.dust },

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 import Feather from '@expo/vector-icons/Feather';
-import { colors, radius, spacing } from '@/src/theme/tokens';
+import { colors, radius, spacing, fonts } from '@/src/theme/tokens';
 
 export function ETAPill({ minutes = 28, label = 'Delivering' }: { minutes?: number; label?: string }) {
   const s = useSharedValue(1);
@@ -36,5 +36,5 @@ const styles = StyleSheet.create({
   dot: {
     width: 6, height: 6, borderRadius: 3, backgroundColor: colors.saffron,
   },
-  text: { fontSize: 11.5, color: colors.saffronDark, fontWeight: '700', letterSpacing: 0.4 },
+  text: { fontSize: 11.5, color: colors.saffronDark, fontFamily: fonts.bodyBold, letterSpacing: 0.3 },
 });

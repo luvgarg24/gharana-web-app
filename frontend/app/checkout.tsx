@@ -5,7 +5,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import * as Haptics from 'expo-haptics';
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withSpring, withTiming } from 'react-native-reanimated';
-import { colors, radius, spacing, type as t } from '@/src/theme/tokens';
+import { colors, radius, spacing, fonts, type as t } from '@/src/theme/tokens';
 import { AddressAPI, OrderAPI } from '@/src/api/client';
 import { useCart } from '@/src/context/CartContext';
 import { PrimaryButton } from '@/src/components/PrimaryButton';
@@ -267,5 +267,5 @@ const styles = StyleSheet.create({
   stampLine1: { color: colors.saffronDark, fontSize: 12, letterSpacing: 2, fontWeight: '700' },
   stampLine2: { color: colors.earth, fontSize: 18, letterSpacing: 2, fontWeight: '800' },
   stampDivider: { width: 60, height: 1, backgroundColor: colors.saffronDark },
-  stampLine3: { color: colors.dust, fontStyle: 'italic', fontFamily: 'Georgia' },
+  stampLine3: { color: colors.dust, fontFamily: fonts.displayItalic },
 });

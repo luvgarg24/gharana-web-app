@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, radius, spacing, type as t } from '@/src/theme/tokens';
+import { colors, radius, spacing, fonts, type as t } from '@/src/theme/tokens';
 
 export function PureStamp({ size = 44 }: { size?: number }) {
   return (
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     letterSpacing: 1,
     color: colors.saffronDark,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
   },
   divider: {
     width: '60%',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     letterSpacing: 1.4,
     color: colors.saffronDark,
-    fontWeight: '700',
+    fontFamily: fonts.bodyBold,
   },
   accent: {
     ...t.label,

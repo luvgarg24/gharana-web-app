@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import { colors, radius, spacing, type as t } from '@/src/theme/tokens';
+import { colors, radius, spacing, fonts, type as t } from '@/src/theme/tokens';
 import { CatalogAPI, SubscriptionAPI } from '@/src/api/client';
 import { PrimaryButton } from '@/src/components/PrimaryButton';
 
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   title: { ...t.h3, fontStyle: 'italic' },
   info: { backgroundColor: colors.earth, padding: spacing.lg, borderRadius: radius.md },
   infoLabel: { color: colors.saffron, fontSize: 10, letterSpacing: 2, fontWeight: '700' },
-  infoTitle: { color: colors.white, fontFamily: 'Georgia', fontStyle: 'italic', fontSize: 22, fontWeight: '700', marginTop: 4 },
+  infoTitle: { color: colors.white, fontFamily: fonts.displayItalic, fontSize: 22, marginTop: 4 },
   infoBody: { color: colors.cream, opacity: 0.8, marginTop: 4, fontSize: 12 },
   card: { backgroundColor: colors.white, padding: spacing.md, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, gap: spacing.md },
   thumb: { width: 56, height: 56, borderRadius: radius.sm, backgroundColor: colors.cream },
