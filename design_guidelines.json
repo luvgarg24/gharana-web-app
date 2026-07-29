@@ -1,0 +1,231 @@
+{
+  "app_name": "Gharana",
+  "personality": "3 Editorial structure with 8 Hand-Drawn warmth and textures",
+  "personality_one_liner": "Handcrafted, honest, fast. A family that has been doing this for decades, now on your phone.",
+  "color": {
+    "surface": "#F5F0E8",
+    "onSurface": "#2C1810",
+    "surfaceSecondary": "#FEFCF8",
+    "onSurfaceSecondary": "#2C1810",
+    "surfaceTertiary": "#EAE4D9",
+    "onSurfaceTertiary": "#2C1810",
+    "surfaceInverse": "#1A1A1A",
+    "onSurfaceInverse": "#FEFCF8",
+    "brand": "#E8873A",
+    "brandPrimary": "#E8873A",
+    "onBrandPrimary": "#FEFCF8",
+    "brandSecondary": "#C9972A",
+    "onBrandSecondary": "#1A1A1A",
+    "brandTertiary": "#8B7355",
+    "onBrandTertiary": "#FEFCF8",
+    "success": "#2D6A4F",
+    "onSuccess": "#FEFCF8",
+    "warning": "#C9972A",
+    "onWarning": "#1A1A1A",
+    "error": "#B03A2E",
+    "onError": "#FEFCF8",
+    "info": "#8B7355",
+    "onInfo": "#FEFCF8",
+    "border": "#EAE4D9",
+    "borderStrong": "#8B7355",
+    "divider": "#EAE4D9"
+  },
+  "typography": {
+    "displayFontFamily": "Cormorant Garamond",
+    "textFontFamily": "Inter",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24
+    }
+  },
+  "spacing": {
+    "rule": "Generous editorial spacing (8pt grid). Allow products to breathe. Whitespace is a luxury indicator. Card content padding is always lg (16) or xl (24).",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 4,
+    "md": 8,
+    "lg": 12,
+    "pill": 999
+  },
+  "shadow_tier": "1",
+  "navigation": "bottom_tabs",
+  "icon_set": "Feather",
+  "glassmorphism": {
+    "enabled": "true",
+    "do's": [
+      "Use subtle frosted glass for the sticky Home header (ETA pill area) over scrolling content.",
+      "Use glass for the bottom tab bar.",
+      "Use glass on the 'Add to cart' sticky footer in Product Details."
+    ],
+    "dont's": [
+      "Do not use glass on product cards.",
+      "Do not over-blur; maintain the handcrafted, physical texture aesthetic."
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler"
+  },
+  "components": {
+    "HeroBanner": "Full-width editorial card. Features the 'wheat grains texture' with a saffron-tinted noise overlay. Large Cormorant Garamond serif text (e.g., 'Ghar jaisi shuddhata'). No heavy buttons, just a delicate textual CTA or arrow.",
+    "CategoryChip": "Pill-shaped or rounded-rect. surfaceSecondary background with a hairline border. Text in Inter 500. Selected state uses brandPrimary (saffron) background with onBrandPrimary text.",
+    "ProductCard": "Mobile-first, single column or 2-col grid. image on top (with quality-seal stamp overlay at top-right). Title in Cormorant Garamond 700 (max 2 lines). Weight variant pill inline below title. Price in Inter 500. Add-to-cart button morphs smoothly into a +/− stepper.",
+    "TrustTicker": "A continuous horizontal scrolling marquee (Trust Bar). Text: 'Zero adulteration • Stone-ground fresh • Cold-pressed oils • Lab-tested batches'. Inter 600 uppercase with 0.12em tracking. Background: brandPrimary (saffron) or surfaceTertiary.",
+    "CartItem": "Horizontal layout. Image on left (lg radius). Title in serif. Weight pill. Stepper on the right. Divider below.",
+    "CheckoutStepper": "Vertical journey-path timeline. Nodes are small circular stamps. Connecting lines are 1px borderStrong.",
+    "OrderStamp": "A custom Reanimated scale-and-rotate animation. When order is placed, a physical-looking 'VERIFIED PURE' circular stamp scales down from 3x to 1x with a slight overshoot bounce, stamping onto the center of the screen.",
+    "ChipRow": "Horizontal ScrollView. gap: sm, paddingHorizontal: lg. Always hide scroll indicator."
+  },
+  "screens": [
+    {
+      "name": "Home",
+      "purpose": "Showcase premium offerings and drive discovery.",
+      "layout": "Sticky header (glass) with pincode, address, and pulsing '⚡ Delivering in 28 min' ETA pill. Search bar underneath. TrustTicker marquee. HeroBanner. Horizontal ScrollView for Category chips. Grid for 'Fresh This Week' (ProductCards). Section headers in Cormorant Garamond. 'Build Your Thali' bundles section.",
+      "states": {
+        "loading": "Warm cream shimmer (saffron-tinted, NOT grey) in a dal/grain pattern motif.",
+        "empty": "N/A",
+        "error": "Illustration of a traditional spice box spilled, with a 'Retry' button."
+      }
+    },
+    {
+      "name": "Categories",
+      "purpose": "Deep dive into product inventory.",
+      "layout": "Sidebar or top tab filter for Flours, Oils, Dals, Spices, Millets. Product grid (2-column) with weight variant pill selectors directly on the cards. Pure Badge stamp on premium items.",
+      "states": {
+        "loading": "Saffron-tinted skeleton grid.",
+        "empty": "No products found in this category.",
+        "error": "Failed to load catalogue."
+      }
+    },
+    {
+      "name": "Product Detail",
+      "purpose": "Tell the story of the ingredient.",
+      "layout": "Large hero image. 'Story/Ingredients/How to Use/Reviews' sticky tabs below. Specific copy tone (e.g., 'Cold-pressed from Rajasthani mustard seeds'). Accent labels in Inter 600 Uppercase. Sticky bottom 'Add to Cart' bar.",
+      "states": {
+        "loading": "Skeleton image and text.",
+        "empty": "N/A",
+        "error": "Failed to load product details."
+      }
+    },
+    {
+      "name": "Cart",
+      "purpose": "Review and upsell.",
+      "layout": "BottomSheet or full screen. CartItems list. 'Add ₹150 more for free delivery' progress bar. Promo code input. Express vs Scheduled slot toggle. Sticky total and Checkout button.",
+      "states": {
+        "loading": "N/A",
+        "empty": "Illustration of an empty woven basket. 'Your Gharana basket is empty.'",
+        "error": "Failed to update cart."
+      }
+    },
+    {
+      "name": "Account",
+      "purpose": "Manage profile, subscriptions, and dietary preferences.",
+      "layout": "Greeting 'Namaste, [Name]' in serif. List of options: Orders, Addresses, Subscriptions. Toggles for dietary flags (Vegan/Jain/Diabetic-friendly). Referrals section.",
+      "states": {
+        "loading": "Skeleton list.",
+        "empty": "N/A",
+        "error": "Failed to load profile."
+      }
+    }
+  ],
+  "images": {
+    "hero_wheat_texture": {
+      "url": "https://images.pexels.com/photos/54084/wheat-grain-agriculture-seed-54084.jpeg",
+      "alt": "Close up texture of golden wheat grains"
+    },
+    "hero_spices_assorted": {
+      "url": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d",
+      "alt": "Top view of assorted Indian whole spices"
+    },
+    "product_mustard_oil": {
+      "url": "https://images.unsplash.com/photo-1552592074-ea7a91b851b3",
+      "alt": "Glass bottle of cold-pressed mustard oil"
+    },
+    "product_coconut_oil": {
+      "url": "https://images.unsplash.com/photo-1628602040839-682c1c959aac",
+      "alt": "Jar of pure cold-pressed coconut oil"
+    },
+    "product_desi_ghee": {
+      "url": "https://images.pexels.com/photos/20689446/pexels-photo-20689446.jpeg",
+      "alt": "Jar of pure desi cow ghee with natural herbs"
+    },
+    "product_toor_dal": {
+      "url": "https://images.unsplash.com/photo-1590517136325-5ddc364fc36f",
+      "alt": "Raw yellow toor dal lentils"
+    },
+    "product_chana_dal": {
+      "url": "https://images.unsplash.com/photo-1780478238047-13e4e6c07cba",
+      "alt": "Yellow chana dal split chickpeas"
+    },
+    "product_urad_dal": {
+      "url": "https://images.unsplash.com/photo-1543831113-c823c4a606b6",
+      "alt": "Black whole urad dal lentils"
+    },
+    "product_moong_dal": {
+      "url": "https://images.pexels.com/photos/7334141/pexels-photo-7334141.jpeg",
+      "alt": "Green moong dal lentils"
+    },
+    "product_basmati_rice": {
+      "url": "https://images.pexels.com/photos/15879426/pexels-photo-15879426.jpeg",
+      "alt": "Premium long grain basmati rice"
+    },
+    "product_wheat_flour": {
+      "url": "https://images.pexels.com/photos/17236203/pexels-photo-17236203.jpeg",
+      "alt": "Stone ground whole wheat atta flour"
+    },
+    "product_millet_grains": {
+      "url": "https://images.pexels.com/photos/18275951/pexels-photo-18275951.jpeg",
+      "alt": "Mixed healthy millet grains"
+    },
+    "product_coriander_seeds": {
+      "url": "https://images.pexels.com/photos/10487771/pexels-photo-10487771.jpeg",
+      "alt": "Whole coriander dhaniya seeds"
+    },
+    "product_turmeric_powder": {
+      "url": "https://images.unsplash.com/photo-1716816211590-c15a328a5ff0",
+      "alt": "Pure turmeric haldi powder and roots"
+    },
+    "stamp_verified_pure": {
+      "url": "https://images.unsplash.com/photo-1508748169069-82590c9f26e6",
+      "alt": "Abstract textured element for badge base"
+    }
+  },
+  "haptics": {
+    "add_to_cart": "selection",
+    "stepper_increment": "light",
+    "stepper_decrement": "light",
+    "category_select": "light",
+    "order_placed_stamp": "heavy",
+    "tab_change": "selection"
+  },
+  "instructions_to_main_agent": [
+    "Strictly adhere to the typography scale: Cormorant Garamond 700 for all Display/Headings, Inter 400/500 for UI/Body/Price, and Inter 600 UPPERCASE with 0.12em tracking for premium accent labels.",
+    "Implement the 'Trust Ticker' on the Home screen using Reanimated for a smooth infinite scroll of text.",
+    "The loading skeletons MUST be a warm saffron-tinted cream (e.g., brandPrimary with 10-15% opacity over surface), absolutely NO generic grey skeletons.",
+    "Order confirmation must include a scale-down physical 'stamping' animation using Reanimated, triggered upon completing checkout.",
+    "Implement the '⚡ Delivering in 28 min' ETA pill in the Home sticky header with a subtle pulsing opacity animation.",
+    "Product cards must have the weight variant selector directly on the card so users don't have to open the product details page to change sizes.",
+    "Do not use default shadows; use subtle border hairlines (border) or soft tinted shadows fitting the 'Editorial' layout. Ensure negative space is generous.",
+    "Cart drawer should include the 'Add ₹X more for free delivery' progress bar with success state turning brand-jade when threshold is met.",
+    "All placeholder text and copy should reflect the honest, handcrafted Indian brand tone. E.g., 'Ghar jaisi shuddhata', 'Cold-pressed from Rajasthani mustard seeds', 'Namaste'.",
+    "Ensure 'pure desi ghee', 'cold-pressed oils', and 'stone-ground flours' labels feel like editorial callouts, potentially overlapping imagery with a gradient scrim."
+  ]
+}
