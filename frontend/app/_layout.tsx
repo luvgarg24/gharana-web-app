@@ -1,33 +1,72 @@
-import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import { LogBox } from "react-native";
+import { Stack, useRouter, useSegments } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import { LogBox, View } from 'react-native';
 
-import { useIconFonts } from "@/src/hooks/use-icon-fonts";
+import { useIconFonts } from '@/src/hooks/use-icon-fonts';
+import { AuthProvider, useAuth } from '@/src/context/AuthContext';
+import { CartProvider } from '@/src/context/CartContext';
+import { colors } from '@/src/theme/tokens';
 
-
-// Disable logbox errors etc so that users can see the app
-// and agent works as expected.
-LogBox.ignoreAllLogs(true)
-
-// Keep the native splash visible from cold start until icon fonts register.
-// Required because @expo/vector-icons' componentDidMount fallback fires
-// Font.loadAsync against a broken vendor path if any <Icon> mounts before
-// the family is registered — which throws on Android Expo Go.
+LogBox.ignoreAllLogs(true);
 SplashScreen.preventAutoHideAsync();
+
+function AuthGate() {
+  const { user, loading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (loading) return;
+    const inAuthGroup = segments[0] === '(auth)';
+    if (!user && !inAuthGroup) {
+      router.replace('/(auth)/login');
+    } else if (user && inAuthGroup) {
+      router.replace('/(tabs)');
+    }
+  }, [user, loading, segments, router]);
+
+  if (loading) return <View style={{ flex: 1, backgroundColor: colors.cream }} />;
+
+  return (
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.cream } }}>
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="product/[slug]" options={{ presentation: 'card', animation: 'slide_from_right' }} />
+      <Stack.Screen name="category/[slug]" options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="search" options={{ animation: 'slide_from_bottom' }} />
+      <Stack.Screen name="checkout" options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="order/[id]" options={{ animation: 'fade' }} />
+      <Stack.Screen name="orders" options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="addresses" options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="subscriptions" options={{ animation: 'slide_from_right' }} />
+      <Stack.Screen name="referrals" options={{ animation: 'slide_from_right' }} />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const [loaded, error] = useIconFonts();
 
   useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
+    if (loaded || error) SplashScreen.hideAsync();
   }, [loaded, error]);
 
-  // If the CDN is unreachable we fall through on error rather than wedging
-  // the app — icons will tofu, but the app still boots.
   if (!loaded && !error) return null;
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.cream }}>
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <AuthProvider>
+          <CartProvider>
+            <AuthGate />
+          </CartProvider>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
 }
