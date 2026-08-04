@@ -52,7 +52,7 @@ export default function Checkout() {
     setPlacing(true);
     try {
       const payload = {
-        items: items.map((i) => ({ product_id: i.product_id, variant_weight: i.variant_weight, quantity: i.quantity })),
+        items: items.map((i) => ({ product_id: i.product_id, variant_id: i.variant_id, variant_weight: i.variant_weight, quantity: i.quantity })),
         address_id: selectedAddr,
         delivery_type: (delivery === 'scheduled' ? 'scheduled' : 'express'),
         scheduled_slot: delivery === 'scheduled' ? slot : undefined,
@@ -60,6 +60,10 @@ export default function Checkout() {
         promo_code: promo || undefined,
       };
       const order: any = await OrderAPI.create(payload);
+      if (Platform.OS === 'web' && order.checkout_url) {
+        window.location.assign(order.checkout_url);
+        return;
+      }
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
       setConfirmed(order);
       // stamp animation

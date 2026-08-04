@@ -37,6 +37,7 @@ export default function ProductDetail() {
     Haptics.selectionAsync().catch(() => {});
     addItem({
       product_id: product.id,
+      variant_id: variant.id,
       slug: product.slug,
       name: product.name,
       image: product.image,

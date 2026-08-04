@@ -13,7 +13,7 @@ export type ProductLite = {
   slug: string;
   tagline: string;
   image: string;
-  variants: { weight: string; price: number; stock: number }[];
+  variants: { id?: string; weight: string; price: number; stock: number }[];
   tags: string[];
   purity_certified: boolean;
   rating: number;
@@ -30,6 +30,7 @@ export function ProductCard({ product, testPrefix = 'catalog' }: { product: Prod
     Haptics.selectionAsync().catch(() => {});
     addItem({
       product_id: product.id,
+      variant_id: variant.id,
       slug: product.slug,
       name: product.name,
       image: product.image,
