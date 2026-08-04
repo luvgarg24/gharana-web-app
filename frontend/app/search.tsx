@@ -96,7 +96,7 @@ export default function Search() {
           numColumns={2}
           columnWrapperStyle={{ gap: spacing.md }}
           contentContainerStyle={{ padding: spacing.xl, gap: spacing.md }}
-          renderItem={({ item }) => <View style={{ flex: 1 }}><ProductCard product={item} /></View>}
+          renderItem={({ item }) => <View style={{ flex: 1 }}><ProductCard product={item} testPrefix="search" /></View>}
           ListEmptyComponent={<Text style={{ padding: spacing.xl, color: colors.dust }}>No matches. Try &ldquo;dal&rdquo; or &ldquo;ghee&rdquo;.</Text>}
         />
       )}

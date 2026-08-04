@@ -4,14 +4,14 @@ import { useRouter } from 'expo-router';
 import { useCart } from '@/src/context/CartContext';
 import { colors, fonts, radius, shadow, spacing } from '@/src/theme/tokens';
 
-export function FloatingCartBar() {
+export function FloatingCartBar({ testPrefix }: { testPrefix: string }) {
   const router = useRouter();
   const { itemCount, subtotal } = useCart();
   if (!itemCount) return null;
 
   return (
     <Pressable
-      testID="floating-view-cart"
+      testID={`${testPrefix}-floating-view-cart`}
       onPress={() => router.push('/(tabs)/cart')}
       style={({ pressed }) => [styles.bar, pressed && styles.pressed]}
     >
@@ -19,8 +19,8 @@ export function FloatingCartBar() {
         <Feather name="shopping-bag" size={18} color={colors.saffron} />
       </View>
       <View style={styles.copy}>
-        <Text style={styles.total} testID="floating-cart-total">₹{subtotal.toFixed(0)}</Text>
-        <Text style={styles.meta} testID="floating-cart-count">{itemCount} item{itemCount > 1 ? 's' : ''} in cart</Text>
+        <Text style={styles.total} testID={`${testPrefix}-floating-cart-total`}>₹{subtotal.toFixed(0)}</Text>
+        <Text style={styles.meta} testID={`${testPrefix}-floating-cart-count`}>{itemCount} item{itemCount > 1 ? 's' : ''} in cart</Text>
       </View>
       <Text style={styles.action}>View cart</Text>
       <Feather name="chevron-right" size={18} color={colors.white} />

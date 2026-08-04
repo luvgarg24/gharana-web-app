@@ -874,7 +874,7 @@ SEED_PRODUCTS = [
         "ingredients": "100% sona masuri rice.",
         "how_to_use": "1:2 water. Perfect for daily meals, curd rice, and pongal.",
         "category_slug": "rice-grains",
-        "image": "https://images.pexels.com/photos/2098139/pexels-photo-2098139.jpeg",
+        "image": "https://images.pexels.com/photos/15879426/pexels-photo-15879426.jpeg",
         "variants": [_v("1 kg", 119), _v("5 kg", 549)],
         "tags": ["everyday"],
         "purity_certified": True,
@@ -1150,6 +1150,10 @@ SEED_RECIPES = [
 
 @app.on_event("startup")
 async def seed():
+    await db.products.update_one(
+        {"slug": "sona-masuri-rice"},
+        {"$set": {"image": "https://images.pexels.com/photos/15879426/pexels-photo-15879426.jpeg"}},
+    )
     if await db.categories.count_documents({}) == 0:
         docs = [{"id": new_id(), **c} for c in SEED_CATEGORIES]
         await db.categories.insert_many(docs)

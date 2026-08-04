@@ -116,12 +116,12 @@ export default function Home() {
 
         <SectionHeader title="Bestsellers near you" subtitle="Loved by Gharana homes" />
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.productsRow}>
-          {featured.map((p) => <View key={p.id} style={{ width: cardWidth }}><ProductCard product={p} /></View>)}
+          {featured.map((p) => <View key={p.id} style={{ width: cardWidth }}><ProductCard product={p} testPrefix="home-best" /></View>)}
         </ScrollView>
 
         <SectionHeader title="Fresh pantry picks" subtitle="Milled and packed recently" />
         <View style={styles.productGrid}>
-          {fresh.slice(0, 6).map((p) => <View key={p.id} style={styles.gridItem}><ProductCard product={p} /></View>)}
+          {fresh.slice(0, 6).map((p) => <View key={p.id} style={styles.gridItem}><ProductCard product={p} testPrefix="home-fresh" /></View>)}
         </View>
 
         <View style={styles.benefits}>
@@ -134,7 +134,7 @@ export default function Home() {
           ))}
         </View>
       </ScrollView>
-      <FloatingCartBar />
+      <FloatingCartBar testPrefix="home" />
     </SafeAreaView>
   );
 }

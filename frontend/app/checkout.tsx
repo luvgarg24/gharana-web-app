@@ -164,7 +164,7 @@ export default function Checkout() {
 
       {/* Confirmation stamp overlay */}
       {confirmed && (
-        <View style={styles.overlay} pointerEvents="none">
+        <View style={[styles.overlay, { pointerEvents: 'none' }]}>
           <Animated.View style={[styles.stamp, stampStyle]}>
             <Text style={styles.stampLine1}>· GHARANA ·</Text>
             <Text style={styles.stampLine2}>ORDER PLACED</Text>

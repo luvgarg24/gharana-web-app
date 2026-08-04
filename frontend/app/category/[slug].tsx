@@ -55,7 +55,7 @@ export default function CategoryScreen() {
         numColumns={2}
         columnWrapperStyle={{ gap: spacing.md }}
         contentContainerStyle={{ padding: spacing.xl, gap: spacing.md, paddingBottom: 120 }}
-        renderItem={({ item }) => <View style={{ flex: 1 }}><ProductCard product={item} /></View>}
+        renderItem={({ item }) => <View style={{ flex: 1 }}><ProductCard product={item} testPrefix="category" /></View>}
       />
     </SafeAreaView>
   );

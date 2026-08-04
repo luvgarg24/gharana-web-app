@@ -4,14 +4,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { LogBox, View } from 'react-native';
+import { View } from 'react-native';
 
 import { useIconFonts } from '@/src/hooks/use-icon-fonts';
 import { AuthProvider, useAuth } from '@/src/context/AuthContext';
 import { CartProvider } from '@/src/context/CartContext';
 import { colors } from '@/src/theme/tokens';
 
-LogBox.ignoreAllLogs(true);
 SplashScreen.preventAutoHideAsync();
 
 function AuthGate() {

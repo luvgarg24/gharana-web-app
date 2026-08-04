@@ -90,7 +90,7 @@ export default function CategoriesScreen() {
                 <View style={styles.fastBadge}><Feather name="zap" size={11} color={colors.jade} /><Text style={styles.fastText}>10 min</Text></View>
               </View>
             }
-            renderItem={({ item }) => <View style={styles.product}><ProductCard product={item} /></View>}
+            renderItem={({ item }) => <View style={styles.product}><ProductCard product={item} testPrefix="shop" /></View>}
             ListEmptyComponent={
               <View style={styles.empty}>
                 {loading ? <ActivityIndicator color={colors.saffron} /> : <Feather name="package" size={30} color={colors.dustLight} />}
@@ -100,7 +100,7 @@ export default function CategoriesScreen() {
           />
         </View>
       </View>
-      <FloatingCartBar />
+      <FloatingCartBar testPrefix="shop" />
     </SafeAreaView>
   );
 }

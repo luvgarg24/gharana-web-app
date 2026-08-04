@@ -111,7 +111,7 @@
 ##     file: "/app/frontend/app/(tabs)/index.tsx"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##       - working: false
 ##         agent: "user"
@@ -119,13 +119,16 @@
 ##       - working: true
 ##         agent: "main"
 ##         comment: "Rebuilt Home, Shop, ProductCard, Cart, Account, Product Detail, Search, Login, tabs, and design tokens into a dense quick-commerce system. TypeScript, ESLint, and phone-sized Playwright flows passed."
+##       - working: true
+##         agent: "main"
+##         comment: "Testing iteration 2 found ambiguous hidden-route selectors. Added screen-scoped test IDs, corrected the broken Sona Masuri image, and re-verified Shop ADD -> stepper -> floating cart -> Cart successfully."
 ##   - task: "Core shopping interactions after redesign"
 ##     implemented: true
 ##     working: true
 ##     file: "/app/frontend/src/components/ProductCard.tsx"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##       - working: true
 ##         agent: "main"
@@ -145,3 +148,5 @@
 ## agent_communication:
 ##   - agent: "main"
 ##     message: "Please regression-test the redesigned frontend on phone dimensions, especially login, home loading, Shop category rail, product add/stepper, floating cart, cart checkout navigation, product detail, and Account. Credentials are in memory/test_credentials.md."
+##   - agent: "main"
+##     message: "Post-test fix verified: Shop-specific selectors now uniquely target the visible card and floating cart. Product appears in Cart after Shop ADD. The prior critical report was caused by duplicate IDs across mounted tab routes, not cart state logic."

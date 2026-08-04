@@ -1,26 +1,48 @@
-# Gharana — Premium Indian Grocery Delivery (Mobile)
+# Gharana — Indian Quick-Commerce Grocery App
 
-**Ghar jaisi shuddhata, ab har roz.**  
-Real Indian pantry — cold-pressed oils, stone-ground flours, unpolished dals, aged basmati — delivered honestly.
+## Problem statement
+Build a native Expo mobile grocery app for quality-first Indian pantry staples. The app must combine trusted sourcing and purity cues with the fast, scan-friendly shopping experience users expect from Blinkit, Swiggy Instamart, and Zomato.
 
-## Stack
-- Expo Router / React Native (SDK 54)
-- FastAPI + MongoDB backend, JWT auth
-- expo-image, expo-blur, expo-linear-gradient, react-native-reanimated
+## Product direction
+- Dense, high-conversion quick-commerce interface rather than an editorial heritage layout
+- Orange action color, green trust/delivery states, white cards, neutral app background
+- Plus Jakarta Sans across headings, body, prices, and controls for clean mobile legibility
+- Fast add/quantity controls, persistent floating cart access, clear delivery ETA and offer cues
 
-## Features
-- Home discovery: sticky header, pulsing ETA pill, Trust Ticker marquee, editorial hero, category grid, Gharana Specials, Build Your Thali, Fresh This Week
-- Categories & product browsing with sort chips
-- Product detail with Story/Ingredients/How to Use/Reviews tabs, weight variants, recipes
-- Cart with promo codes (GHAR50, PURE10, FIRSTBOX), free-delivery progress bar, express vs scheduled slots
-- Checkout with address selection/create, payment method (UPI/Card/Wallet/COD), animated Gharana quality stamp on confirmation
-- Live order tracking with journey timeline (auto-progresses via mock time-based logic)
-- Orders history + one-tap reorder
-- Address book with default toggle, edit, delete
-- Ration Plans (subscriptions) — weekly / biweekly / monthly with pause/resume
-- Referrals — share code, earn ₹100 credit when a friend orders
-- Search with recent + trending
-- Dietary preferences (Vegan / Jain / Diabetic-friendly / Gluten-free)
+## Architecture
+- Frontend: Expo Router / React Native (SDK 54), Context API, AsyncStorage, expo-image, Reanimated
+- Backend: FastAPI with all routes under `/api`
+- Database: MongoDB through `MONGO_URL`
+- Authentication: JWT email/password
+- Frontend API base: `EXPO_PUBLIC_BACKEND_URL`
 
-## Test credentials
-See `/app/memory/test_credentials.md`. Seeded user: `test@gharana.in` / `Test@1234`.
+## Implemented
+- Quick-commerce Home with ETA/location, search, promotional cards, 4-column categories, offers, product rails, product grid, and floating cart bar
+- Shop with left category rail, fixed two-column product grid, category switching, add/quantity controls, and floating cart
+- Compact product cards with 10-minute cue, quality badge, rating, weight switching, price, ADD, and quantity stepper
+- Product detail, Cart, Account, Search, Login, and bottom tabs aligned to the new visual system
+- Cart promotions, delivery choice, bill details, mock checkout, order history/tracking, addresses, subscriptions, referrals, and profile preferences
+- Unique screen-scoped test IDs to prevent hidden Expo Router screens from causing ambiguous automation
+- FastAPI catalog, auth, address, order, subscription, referral, recipe, promo, and delivery-zone APIs
+
+## Verification
+- TypeScript and ESLint pass
+- Python backend lint passes
+- Phone-sized UI flow verified: login, Home, Shop, category switch, Shop ADD to stepper, floating cart, Cart item/totals, Product Detail, Search, Account, and checkout navigation
+- External Sona Masuri image 404 corrected in seed and existing database migration
+
+## Backlog
+### P0
+- Google Maps address autocomplete and map pin selection in Address and Checkout
+- Replace remote catalog photography with optimized owned/local product packshots
+
+### P1
+- Deeper ingredient-linked recipes on Product Detail
+- Recurring subscription scheduling and delivery management
+- Referral deep links and credit ledger
+
+### P2
+- Gharana Pass membership
+- Batch transparency QR scanner
+- WhatsApp reorder
+- Personalized suggestions from order history

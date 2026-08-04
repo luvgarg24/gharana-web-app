@@ -19,7 +19,7 @@ export type ProductLite = {
   rating: number;
 };
 
-export function ProductCard({ product }: { product: ProductLite }) {
+export function ProductCard({ product, testPrefix = 'catalog' }: { product: ProductLite; testPrefix?: string }) {
   const router = useRouter();
   const [wIdx, setWIdx] = useState(0);
   const { addItem, getQuantity, setQuantity } = useCart();
@@ -39,12 +39,12 @@ export function ProductCard({ product }: { product: ProductLite }) {
   };
 
   return (
-    <View style={styles.card} testID={`product-card-${product.slug}`}>
-      <Pressable onPress={() => router.push(`/product/${product.slug}`)} testID={`open-product-${product.slug}`}>
+    <View style={styles.card} testID={`${testPrefix}-product-card-${product.slug}`}>
+      <Pressable onPress={() => router.push(`/product/${product.slug}`)} testID={`${testPrefix}-open-product-${product.slug}`}>
         <View style={styles.imageWrap}>
           <Image source={{ uri: product.image }} style={styles.image} contentFit="cover" transition={180} />
           {product.purity_certified && (
-            <View style={styles.qualityBadge} testID={`quality-${product.slug}`}>
+            <View style={styles.qualityBadge} testID={`${testPrefix}-quality-${product.slug}`}>
               <Feather name="check-circle" size={10} color={colors.jade} />
               <Text style={styles.qualityText}>PURE</Text>
             </View>
@@ -60,12 +60,12 @@ export function ProductCard({ product }: { product: ProductLite }) {
           <Feather name="star" size={10} color={colors.gold} />
           <Text style={styles.rating}>{product.rating}</Text>
         </View>
-        <Pressable onPress={() => router.push(`/product/${product.slug}`)} testID={`product-name-${product.slug}`}>
+        <Pressable onPress={() => router.push(`/product/${product.slug}`)} testID={`${testPrefix}-product-name-${product.slug}`}>
           <Text style={styles.name} numberOfLines={2}>{product.name}</Text>
         </Pressable>
 
         <Pressable
-          testID={`variant-${product.slug}`}
+          testID={`${testPrefix}-variant-${product.slug}`}
           onPress={() => product.variants.length > 1 && setWIdx((wIdx + 1) % product.variants.length)}
           style={styles.variant}
         >
@@ -74,18 +74,18 @@ export function ProductCard({ product }: { product: ProductLite }) {
         </Pressable>
 
         <View style={styles.footer}>
-          <Text style={styles.price} testID={`price-${product.slug}`}>₹{variant.price}</Text>
+          <Text style={styles.price} testID={`${testPrefix}-price-${product.slug}`}>₹{variant.price}</Text>
           {qty === 0 ? (
-            <Pressable testID={`add-${product.slug}`} onPress={add} style={({ pressed }) => [styles.addBtn, pressed && styles.pressed]}>
+            <Pressable testID={`${testPrefix}-add-${product.slug}`} onPress={add} style={({ pressed }) => [styles.addBtn, pressed && styles.pressed]}>
               <Text style={styles.addText}>ADD</Text>
             </Pressable>
           ) : (
-            <View style={styles.stepper} testID={`stepper-${product.slug}`}>
-              <Pressable testID={`dec-${product.slug}`} onPress={() => setQuantity(product.id, variant.weight, qty - 1)} style={styles.stepBtn}>
+            <View style={styles.stepper} testID={`${testPrefix}-stepper-${product.slug}`}>
+              <Pressable testID={`${testPrefix}-dec-${product.slug}`} onPress={() => setQuantity(product.id, variant.weight, qty - 1)} style={styles.stepBtn}>
                 <Feather name="minus" size={15} color={colors.white} />
               </Pressable>
               <Text style={styles.qty}>{qty}</Text>
-              <Pressable testID={`inc-${product.slug}`} onPress={() => setQuantity(product.id, variant.weight, qty + 1)} style={styles.stepBtn}>
+              <Pressable testID={`${testPrefix}-inc-${product.slug}`} onPress={() => setQuantity(product.id, variant.weight, qty + 1)} style={styles.stepBtn}>
                 <Feather name="plus" size={15} color={colors.white} />
               </Pressable>
             </View>
