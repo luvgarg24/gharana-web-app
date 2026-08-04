@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable, Switch } from 'react-nat
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
-import { colors, radius, spacing, type as t } from '@/src/theme/tokens';
+import { colors, fonts, radius, spacing, type as t } from '@/src/theme/tokens';
 import { useAuth } from '@/src/context/AuthContext';
 
 const DIETARY = ['Vegan', 'Jain', 'Diabetic-friendly', 'Gluten-free'];
@@ -36,8 +36,8 @@ export default function AccountScreen() {
     <SafeAreaView edges={['top']} style={styles.safe} testID="account-screen">
       <ScrollView contentContainerStyle={{ padding: spacing.xl, paddingBottom: 120 }}>
         <View style={styles.hero}>
-          <Text style={styles.namaste}>Namaste,</Text>
-          <Text style={styles.name}>{user?.full_name || 'Guest'}</Text>
+          <Text style={styles.namaste}>MY ACCOUNT</Text>
+          <Text style={styles.name} testID="account-user-name">Hi, {user?.full_name || 'Guest'}</Text>
           <Text style={styles.email}>{user?.email}</Text>
           <View style={styles.creditRow}>
             <Feather name="award" size={13} color={colors.jade} />
@@ -52,7 +52,7 @@ export default function AccountScreen() {
           <Tile icon="gift" label="Referrals" onPress={() => router.push('/referrals')} testID="tile-referrals" />
         </View>
 
-        <Text style={styles.sectionLabel}>DIETARY PREFERENCES</Text>
+        <Text style={styles.sectionLabel}>Dietary preferences</Text>
         <View style={styles.pillRow}>
           {DIETARY.map((d) => (
             <Pressable key={d} onPress={() => toggle(d)} style={[styles.pill, dietary.includes(d) && styles.pillActive]} testID={`diet-${d.toLowerCase()}`}>
@@ -74,7 +74,7 @@ export default function AccountScreen() {
           <Text style={styles.logoutText}>Sign out</Text>
         </Pressable>
 
-        <Text style={styles.tagline}>Ghar jaisi shuddhata, since always.</Text>
+        <Text style={styles.tagline}>Gharana · Pure pantry, delivered fast</Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -92,26 +92,26 @@ function Tile({ icon, label, onPress, testID }: any) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
-  hero: { paddingVertical: spacing.lg },
-  namaste: { ...t.body, color: colors.dust },
-  name: { ...t.h1, fontStyle: 'italic' },
+  hero: { padding: spacing.lg, backgroundColor: colors.white, borderRadius: radius.lg, borderWidth: 1, borderColor: colors.border },
+  namaste: { color: colors.saffron, fontFamily: fonts.bodyBold, fontSize: 9.5, letterSpacing: 1 },
+  name: { ...t.h1, fontSize: 24, marginTop: 5 },
   email: { ...t.small, color: colors.dust, marginTop: 2 },
-  creditRow: { flexDirection: 'row', gap: 6, alignItems: 'center', marginTop: spacing.md, backgroundColor: colors.jadeTint, alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill },
-  creditText: { color: colors.jade, fontWeight: '700', fontSize: 12 },
+  creditRow: { flexDirection: 'row', gap: 6, alignItems: 'center', marginTop: spacing.md, backgroundColor: colors.jadeTint, alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8 },
+  creditText: { color: colors.jade, fontFamily: fonts.bodyBold, fontSize: 11.5 },
   grid: { marginTop: spacing.lg, gap: 8 },
-  tile: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.md, backgroundColor: colors.white, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
-  tileIcon: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.saffronTint, alignItems: 'center', justifyContent: 'center' },
-  tileLabel: { ...t.body, fontWeight: '600' },
-  sectionLabel: { fontSize: 10, letterSpacing: 1.6, fontWeight: '700', color: colors.dust, marginTop: spacing.xxl, marginBottom: spacing.sm },
+  tile: { minHeight: 62, flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingHorizontal: spacing.md, backgroundColor: colors.white, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
+  tileIcon: { width: 38, height: 38, borderRadius: 11, backgroundColor: colors.saffronTint, alignItems: 'center', justifyContent: 'center' },
+  tileLabel: { ...t.body, fontFamily: fonts.bodySemibold },
+  sectionLabel: { fontSize: 15, fontFamily: fonts.bodyBold, color: colors.earth, marginTop: spacing.xxl, marginBottom: spacing.sm },
   pillRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   pill: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white },
   pillActive: { backgroundColor: colors.jade, borderColor: colors.jade },
   pillText: { fontSize: 12, color: colors.earth, fontWeight: '600' },
   pillTextActive: { color: colors.white },
   notifRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: spacing.xl, padding: spacing.md, backgroundColor: colors.white, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
-  notifTitle: { ...t.body, fontWeight: '600' },
+  notifTitle: { ...t.body, fontFamily: fonts.bodySemibold },
   notifSub: { ...t.small, color: colors.dust, marginTop: 2 },
   logoutBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, alignSelf: 'center', padding: spacing.lg, marginTop: spacing.xxl },
   logoutText: { color: colors.error, fontWeight: '700' },
-  tagline: { textAlign: 'center', color: colors.dust, fontStyle: 'italic', marginTop: spacing.lg },
+  tagline: { textAlign: 'center', color: colors.dust, fontFamily: fonts.bodyMedium, fontSize: 11, marginTop: spacing.lg },
 });

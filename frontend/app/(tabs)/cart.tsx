@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useRouter } from 'expo-router';
-import { colors, radius, spacing, type as t, shadow } from '@/src/theme/tokens';
+import { colors, fonts, radius, spacing, type as t, shadow } from '@/src/theme/tokens';
 import { useCart } from '@/src/context/CartContext';
 import { PrimaryButton } from '@/src/components/PrimaryButton';
 import { PromoAPI } from '@/src/api/client';
@@ -44,12 +44,12 @@ export default function CartScreen() {
   if (items.length === 0) {
     return (
       <SafeAreaView edges={['top']} style={styles.safe} testID="cart-screen-empty">
-        <View style={styles.header}><Text style={styles.title}>Your basket</Text></View>
+        <View style={styles.header}><Text style={styles.title}>My cart</Text></View>
         <View style={styles.empty}>
           <View style={styles.emptyCircle}><Feather name="shopping-bag" size={44} color={colors.saffronDark} /></View>
-          <Text style={styles.emptyTitle}>Your Gharana basket is empty</Text>
-          <Text style={styles.emptyBody}>Bring home some real atta, dal, and ghee.</Text>
-          <PrimaryButton title="Fill your pantry" onPress={() => router.push('/(tabs)/categories')} style={{ marginTop: spacing.lg }} testID="empty-shop-btn" />
+          <Text style={styles.emptyTitle}>Your cart is empty</Text>
+          <Text style={styles.emptyBody}>Add everyday pantry essentials in a tap.</Text>
+          <PrimaryButton title="Start shopping" onPress={() => router.push('/(tabs)/categories')} style={{ marginTop: spacing.lg }} testID="empty-shop-btn" />
         </View>
       </SafeAreaView>
     );
@@ -58,17 +58,17 @@ export default function CartScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.safe} testID="cart-screen">
       <View style={styles.header}>
-        <Text style={styles.title}>Your basket</Text>
+        <Text style={styles.title}>My cart</Text>
         <Text style={styles.count}>{items.length} item{items.length > 1 ? 's' : ''}</Text>
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: spacing.xl, paddingBottom: 240 }}>
+      <ScrollView contentContainerStyle={{ padding: spacing.md, paddingBottom: 240 }}>
         {/* Free delivery progress */}
         <View style={styles.progressCard}>
           <View style={styles.progressHeader}>
             <Feather name="truck" size={14} color={remainingFree === 0 ? colors.jade : colors.saffronDark} />
             <Text style={styles.progressText}>
-              {remainingFree === 0 ? 'Free delivery unlocked' : `Add ₹${remainingFree} more for free delivery`}
+              {remainingFree === 0 ? 'You unlocked free delivery' : `Add ₹${remainingFree} for free delivery`}
             </Text>
           </View>
           <View style={styles.progressBg}>
@@ -83,7 +83,7 @@ export default function CartScreen() {
             <View style={{ flex: 1 }}>
               <Text style={styles.itemName} numberOfLines={2}>{it.name}</Text>
               <Text style={styles.itemVar}>{it.variant_weight}</Text>
-              <Text style={styles.itemPrice}>₹{it.unit_price} × {it.quantity} = ₹{(it.unit_price * it.quantity).toFixed(0)}</Text>
+              <Text style={styles.itemPrice}>₹{(it.unit_price * it.quantity).toFixed(0)}</Text>
             </View>
             <View style={styles.stepper}>
               <Pressable onPress={() => setQuantity(it.product_id, it.variant_weight, it.quantity - 1)} style={styles.stepBtn} testID={`cart-dec-${it.slug}`}>
@@ -99,19 +99,19 @@ export default function CartScreen() {
 
         {/* Promo */}
         <View style={styles.promoCard}>
-          <Text style={styles.sectionLabel}>PROMO CODE</Text>
+          <Text style={styles.sectionLabel}>Apply coupon</Text>
           <View style={styles.promoRow}>
             <TextInput
               value={promo}
               onChangeText={setPromo}
-              placeholder="GHAR50, PURE10…"
+              placeholder="Enter coupon code"
               placeholderTextColor={colors.dustLight}
               style={styles.promoInput}
               autoCapitalize="characters"
               testID="promo-input"
             />
             <Pressable onPress={applyPromo} style={styles.promoBtn} testID="apply-promo-btn">
-              <Text style={styles.promoBtnText}>APPLY</Text>
+              <Text style={styles.promoBtnText}>Apply</Text>
             </Pressable>
           </View>
           {promoResult && <Text style={styles.promoOk}>✓ {promoResult.code} applied — you save ₹{promoResult.discount}</Text>}
@@ -120,7 +120,7 @@ export default function CartScreen() {
 
         {/* Delivery */}
         <View style={styles.delivery}>
-          <Text style={styles.sectionLabel}>DELIVERY</Text>
+          <Text style={styles.sectionLabel}>Delivery preference</Text>
           <View style={{ flexDirection: 'row', gap: 8 }}>
             <Pressable onPress={() => setDeliveryType('express')} style={[styles.delTab, deliveryType === 'express' && styles.delTabActive]} testID="delivery-express">
               <Feather name="zap" size={14} color={deliveryType === 'express' ? colors.white : colors.earth} />
@@ -147,7 +147,7 @@ export default function CartScreen() {
       <View style={styles.checkoutBar}>
         <View>
           <Text style={styles.checkoutSmall}>₹{total.toFixed(0)}</Text>
-          <Text style={styles.checkoutLabel}>Total · {items.length} item{items.length > 1 ? 's' : ''}</Text>
+          <Text style={styles.checkoutLabel}>View bill details</Text>
         </View>
         <Pressable
           testID="checkout-btn"
@@ -155,7 +155,7 @@ export default function CartScreen() {
           onPress={() => router.push({ pathname: '/checkout', params: { delivery: deliveryType, promo: promoResult?.code || '' } })}
         >
           <Feather name="lock" size={14} color={colors.white} />
-          <Text style={styles.checkoutBtnText}>Checkout</Text>
+          <Text style={styles.checkoutBtnText}>Proceed</Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -173,44 +173,44 @@ function Row({ label, value, valueColor, bold }: { label: string; value: string;
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.cream },
-  header: { paddingHorizontal: spacing.xl, paddingVertical: spacing.md, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
-  title: { ...t.h2, fontStyle: 'italic' },
+  header: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', backgroundColor: colors.white, borderBottomWidth: 1, borderBottomColor: colors.border },
+  title: { ...t.h2 },
   count: { ...t.small, color: colors.dust },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.xxl, gap: 6 },
-  emptyCircle: { width: 92, height: 92, borderRadius: 46, backgroundColor: colors.saffronTint, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.lg },
+  emptyCircle: { width: 92, height: 92, borderRadius: 28, backgroundColor: colors.saffronTint, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.lg },
   emptyTitle: { ...t.h3 },
   emptyBody: { ...t.body, color: colors.dust, textAlign: 'center' },
-  progressCard: { backgroundColor: colors.white, borderRadius: radius.md, padding: spacing.md, borderWidth: 1, borderColor: colors.border, marginBottom: spacing.lg },
+  progressCard: { backgroundColor: colors.jadeTint, borderRadius: radius.md, padding: spacing.md, borderWidth: 1, borderColor: '#CDEAD9', marginBottom: spacing.md },
   progressHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
-  progressText: { fontSize: 12, color: colors.earth, fontWeight: '600' },
+  progressText: { fontSize: 12, color: colors.earth, fontFamily: fonts.bodySemibold },
   progressBg: { height: 6, borderRadius: 3, backgroundColor: colors.border, overflow: 'hidden' },
   progressFill: { height: '100%', borderRadius: 3 },
   item: { flexDirection: 'row', gap: spacing.md, backgroundColor: colors.white, padding: spacing.md, borderRadius: radius.md, marginBottom: spacing.sm, borderWidth: 1, borderColor: colors.border, alignItems: 'center' },
-  itemImg: { width: 64, height: 64, borderRadius: radius.sm, backgroundColor: colors.cream },
-  itemName: { ...t.body, fontWeight: '600', color: colors.earth },
+  itemImg: { width: 68, height: 68, borderRadius: radius.sm, backgroundColor: colors.cream },
+  itemName: { ...t.body, fontFamily: fonts.bodySemibold, color: colors.earth },
   itemVar: { ...t.small, color: colors.dust, marginTop: 2 },
-  itemPrice: { ...t.small, color: colors.saffronDark, fontWeight: '700', marginTop: 4 },
-  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.earth, borderRadius: radius.pill, paddingHorizontal: 4, gap: 4 },
-  stepBtn: { padding: 6 },
-  stepQty: { color: colors.white, fontWeight: '700', minWidth: 14, textAlign: 'center' },
-  sectionLabel: { fontSize: 10, letterSpacing: 1.6, fontWeight: '700', color: colors.dust, marginBottom: 8 },
+  itemPrice: { ...t.small, color: colors.earth, fontFamily: fonts.bodyBold, marginTop: 4 },
+  stepper: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.saffron, borderRadius: 9, minHeight: 38 },
+  stepBtn: { width: 34, height: 38, alignItems: 'center', justifyContent: 'center' },
+  stepQty: { color: colors.white, fontFamily: fonts.bodyBold, minWidth: 18, textAlign: 'center' },
+  sectionLabel: { fontSize: 14, fontFamily: fonts.bodyBold, color: colors.earth, marginBottom: 10 },
   promoCard: { marginTop: spacing.lg, backgroundColor: colors.white, padding: spacing.md, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
   promoRow: { flexDirection: 'row', gap: 8 },
-  promoInput: { flex: 1, backgroundColor: colors.cream, borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 10, color: colors.earth, fontWeight: '600' },
-  promoBtn: { backgroundColor: colors.earth, paddingHorizontal: 16, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
-  promoBtnText: { color: colors.white, fontWeight: '700', fontSize: 12, letterSpacing: 1 },
+  promoInput: { flex: 1, minHeight: 44, backgroundColor: colors.cream, borderRadius: radius.sm, paddingHorizontal: 12, color: colors.earth, fontFamily: fonts.bodyMedium },
+  promoBtn: { minWidth: 72, minHeight: 44, backgroundColor: colors.earth, paddingHorizontal: 16, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  promoBtnText: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 12 },
   promoOk: { color: colors.jade, marginTop: 8, fontSize: 12, fontWeight: '600' },
   promoErr: { color: colors.error, marginTop: 8, fontSize: 12 },
   delivery: { marginTop: spacing.lg, backgroundColor: colors.white, padding: spacing.md, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
   delTab: { flex: 1, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 10, flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'center', backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.border },
-  delTabActive: { backgroundColor: colors.earth, borderColor: colors.earth },
+  delTabActive: { backgroundColor: colors.saffron, borderColor: colors.saffron },
   delTabText: { fontSize: 12, fontWeight: '600', color: colors.earth },
   delTabTextActive: { color: colors.white },
   totals: { marginTop: spacing.lg, backgroundColor: colors.white, padding: spacing.md, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border },
   savings: { color: colors.jade, textAlign: 'center', marginTop: 8, fontWeight: '600', fontSize: 12 },
-  checkoutBar: { position: 'absolute', left: spacing.xl, right: spacing.xl, bottom: spacing.lg, backgroundColor: colors.white, borderRadius: radius.pill, padding: 6, paddingLeft: spacing.xl, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', ...shadow.card, borderWidth: 1, borderColor: colors.border },
+  checkoutBar: { position: 'absolute', left: spacing.md, right: spacing.md, bottom: spacing.md, backgroundColor: colors.white, borderRadius: radius.lg, padding: 7, paddingLeft: spacing.lg, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', ...shadow.card, borderWidth: 1, borderColor: colors.border },
   checkoutSmall: { ...t.h4, fontSize: 20 },
   checkoutLabel: { ...t.small, color: colors.dust },
-  checkoutBtn: { backgroundColor: colors.saffron, borderRadius: radius.pill, paddingHorizontal: 20, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  checkoutBtn: { minHeight: 48, backgroundColor: colors.saffron, borderRadius: radius.md, paddingHorizontal: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   checkoutBtnText: { color: colors.white, fontWeight: '700', fontSize: 14 },
 });

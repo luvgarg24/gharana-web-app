@@ -15,7 +15,7 @@ const TABS = ['Story', 'Ingredients', 'How to Use', 'Reviews'] as const;
 export default function ProductDetail() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const router = useRouter();
-  const { addItem, getQuantity } = useCart();
+  const { addItem, getQuantity, setQuantity } = useCart();
   const [product, setProduct] = useState<any | null>(null);
   const [recipes, setRecipes] = useState<any[]>([]);
   const [wIdx, setWIdx] = useState(0);
@@ -62,7 +62,7 @@ export default function ProductDetail() {
 
         <View style={{ padding: spacing.xl }}>
           <AccentLabel>{product.tags.join(' · ').toUpperCase() || 'GHARANA'}</AccentLabel>
-          <Text style={styles.name}>{product.name}</Text>
+          <Text style={styles.name} testID="product-detail-name">{product.name}</Text>
           <Text style={styles.tag}>{product.tagline}</Text>
 
           <View style={styles.rating}>
@@ -125,10 +125,21 @@ export default function ProductDetail() {
           <Text style={styles.footerPrice}>₹{variant.price}</Text>
           <Text style={styles.footerVar}>for {variant.weight}</Text>
         </View>
-        <Pressable style={styles.addBtn} onPress={onAdd} testID="pd-add-to-cart">
-          <Feather name="shopping-bag" size={16} color={colors.white} />
-          <Text style={styles.addBtnText}>{inCart > 0 ? `In cart · ${inCart}` : 'Add to basket'}</Text>
-        </Pressable>
+        {inCart > 0 ? (
+          <View style={styles.footerStepper} testID="pd-cart-stepper">
+            <Pressable style={styles.footerStepBtn} onPress={() => setQuantity(product.id, variant.weight, inCart - 1)} testID="pd-dec">
+              <Feather name="minus" size={18} color={colors.white} />
+            </Pressable>
+            <Text style={styles.footerQty}>{inCart}</Text>
+            <Pressable style={styles.footerStepBtn} onPress={() => setQuantity(product.id, variant.weight, inCart + 1)} testID="pd-inc">
+              <Feather name="plus" size={18} color={colors.white} />
+            </Pressable>
+          </View>
+        ) : (
+          <Pressable style={styles.addBtn} onPress={onAdd} testID="pd-add-to-cart">
+            <Text style={styles.addBtnText}>Add to cart</Text>
+          </Pressable>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -156,23 +167,23 @@ function ReviewRow({ name, text }: { name: string; text: string }) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.cream },
+  safe: { flex: 1, backgroundColor: colors.white },
   header: { flexDirection: 'row', justifyContent: 'space-between', padding: spacing.md, position: 'absolute', top: spacing.lg, left: 0, right: 0, zIndex: 10 },
   iconBtn: { width: 42, height: 42, borderRadius: 21, backgroundColor: colors.white, alignItems: 'center', justifyContent: 'center', ...shadow.soft },
-  imageWrap: { height: 380, backgroundColor: colors.cream },
+  imageWrap: { height: 310, margin: spacing.md, borderRadius: radius.lg, overflow: 'hidden', backgroundColor: colors.cream },
   image: { width: '100%', height: '100%' },
   stamp: { position: 'absolute', bottom: spacing.lg, right: spacing.lg },
-  name: { ...t.h1, marginTop: 8 },
+  name: { ...t.h1, fontSize: 25, lineHeight: 31, marginTop: 8 },
   tag: { ...t.body, color: colors.dust, marginTop: 4 },
   rating: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: spacing.md },
   sectionLabel: { fontSize: 10, letterSpacing: 1.6, fontWeight: '700', color: colors.dust, marginTop: spacing.xl, marginBottom: 8 },
   variantRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   variantChip: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.white, alignItems: 'center' },
-  variantChipActive: { backgroundColor: colors.earth, borderColor: colors.earth },
+  variantChipActive: { backgroundColor: colors.saffronTint, borderColor: colors.saffron },
   variantW: { fontSize: 13, fontWeight: '700', color: colors.earth },
-  variantWActive: { color: colors.white },
+  variantWActive: { color: colors.saffronDark },
   variantP: { fontSize: 11, color: colors.dust, marginTop: 2 },
-  variantPActive: { color: colors.saffron },
+  variantPActive: { color: colors.saffronDark },
   lowStock: { color: colors.saffronDark, fontSize: 12, marginTop: 8, fontWeight: '600' },
   tabs: { flexDirection: 'row', marginTop: spacing.xl, borderBottomWidth: 1, borderBottomColor: colors.border },
   tab: { paddingVertical: 10, paddingHorizontal: 14, marginRight: 4 },
@@ -181,14 +192,17 @@ const styles = StyleSheet.create({
   tabTextActive: { color: colors.earth },
   tabBody: { paddingVertical: spacing.md, minHeight: 90 },
   body: { ...t.body, lineHeight: 24 },
-  sectionTitle: { ...t.h3, marginTop: spacing.xl, marginBottom: 8, fontStyle: 'italic' },
+  sectionTitle: { ...t.h3, marginTop: spacing.xl, marginBottom: 8 },
   recipe: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: spacing.sm, backgroundColor: colors.white, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, marginBottom: 8 },
   recipeImg: { width: 56, height: 56, borderRadius: radius.sm },
   recipeName: { ...t.body, fontWeight: '600' },
   recipeMeta: { ...t.small, color: colors.dust, marginTop: 2 },
-  footer: { position: 'absolute', left: spacing.xl, right: spacing.xl, bottom: spacing.lg, backgroundColor: colors.earth, borderRadius: radius.pill, padding: 8, paddingLeft: spacing.xl, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  footerPrice: { color: colors.white, fontSize: 20, fontWeight: '700' },
-  footerVar: { color: colors.cream, fontSize: 11 },
-  addBtn: { flexDirection: 'row', gap: 8, alignItems: 'center', backgroundColor: colors.saffron, paddingHorizontal: 20, paddingVertical: 14, borderRadius: radius.pill },
+  footer: { position: 'absolute', left: spacing.md, right: spacing.md, bottom: spacing.md, minHeight: 64, backgroundColor: colors.white, borderRadius: radius.lg, padding: 7, paddingLeft: spacing.lg, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', ...shadow.card, borderWidth: 1, borderColor: colors.border },
+  footerPrice: { color: colors.earth, fontSize: 19, fontWeight: '700' },
+  footerVar: { color: colors.dust, fontSize: 10.5 },
+  addBtn: { minWidth: 156, height: 48, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.saffron, borderRadius: radius.md },
   addBtnText: { color: colors.white, fontWeight: '700', fontSize: 14 },
+  footerStepper: { width: 156, height: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: colors.saffron, borderRadius: radius.md },
+  footerStepBtn: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center' },
+  footerQty: { color: colors.white, fontWeight: '700', fontSize: 15 },
 });

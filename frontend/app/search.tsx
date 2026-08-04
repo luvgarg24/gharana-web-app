@@ -44,7 +44,7 @@ export default function Search() {
   return (
     <SafeAreaView edges={['top']} style={styles.safe} testID="search-screen">
       <View style={styles.headerRow}>
-        <Pressable onPress={() => router.back()} testID="search-back"><Feather name="arrow-left" size={22} color={colors.earth} /></Pressable>
+        <Pressable onPress={() => router.back()} style={styles.backBtn} testID="search-back"><Feather name="arrow-left" size={20} color={colors.earth} /></Pressable>
         <View style={styles.searchInputWrap}>
           <Feather name="search" size={15} color={colors.dust} />
           <TextInput
@@ -53,7 +53,7 @@ export default function Search() {
             value={q}
             onChangeText={setQ}
             onSubmitEditing={submit}
-            placeholder="Chakki atta, mustard oil, cow ghee…"
+            placeholder="Search for products"
             placeholderTextColor={colors.dustLight}
             style={styles.input}
             returnKeyType="search"
@@ -68,7 +68,7 @@ export default function Search() {
         <ScrollView contentContainerStyle={{ padding: spacing.xl }}>
           {recent.length > 0 && (
             <>
-              <Text style={styles.sectionLabel}>RECENT</Text>
+              <Text style={styles.sectionLabel}>Recent searches</Text>
               <View style={styles.chipRow}>
                 {recent.map((r) => (
                   <Pressable key={r} onPress={() => pickTerm(r)} style={styles.chip} testID={`recent-${r}`}>
@@ -79,7 +79,7 @@ export default function Search() {
               </View>
             </>
           )}
-          <Text style={styles.sectionLabel}>TRENDING TODAY</Text>
+          <Text style={styles.sectionLabel}>Popular right now</Text>
           <View style={styles.chipRow}>
             {trending.map((r) => (
               <Pressable key={r} onPress={() => pickTerm(r)} style={styles.chip} testID={`trending-${r}`}>
@@ -105,12 +105,13 @@ export default function Search() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.cream },
-  headerRow: { flexDirection: 'row', alignItems: 'center', gap: 12, padding: spacing.xl },
-  searchInputWrap: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: colors.white, borderRadius: radius.pill, paddingHorizontal: 16, borderWidth: 1, borderColor: colors.border },
-  input: { flex: 1, paddingVertical: 12, color: colors.earth, fontSize: 14 },
-  sectionLabel: { fontSize: 10, letterSpacing: 1.6, fontWeight: '700', color: colors.dust, marginBottom: 10, marginTop: spacing.md },
+  safe: { flex: 1, backgroundColor: colors.white },
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderBottomWidth: 1, borderBottomColor: colors.border },
+  backBtn: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  searchInputWrap: { height: 48, flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: colors.creamDeep, borderRadius: radius.md, paddingHorizontal: 14, borderWidth: 1, borderColor: colors.border },
+  input: { flex: 1, height: 48, color: colors.earth, fontSize: 13.5 },
+  sectionLabel: { fontSize: 16, fontWeight: '700', color: colors.earth, marginBottom: 10, marginTop: spacing.md },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: spacing.md },
-  chip: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill },
+  chip: { minHeight: 40, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.white, borderWidth: 1, borderColor: colors.border, paddingHorizontal: 12, borderRadius: radius.md },
   chipText: { color: colors.earth, fontSize: 13, fontWeight: '500' },
 });

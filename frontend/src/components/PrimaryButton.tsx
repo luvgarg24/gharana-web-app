@@ -50,7 +50,7 @@ export function PrimaryButton({ title, onPress, variant = 'primary', disabled, l
 const styles = StyleSheet.create({
   btn: {
     height: 52,
-    borderRadius: radius.pill,
+    borderRadius: radius.md,
     paddingHorizontal: spacing.xl,
     flexDirection: 'row',
     alignItems: 'center',

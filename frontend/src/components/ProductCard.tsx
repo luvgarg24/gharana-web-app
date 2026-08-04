@@ -1,11 +1,10 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import Feather from '@expo/vector-icons/Feather';
-import { colors, radius, spacing, fonts, type as t } from '@/src/theme/tokens';
-import { PureStamp } from './PureStamp';
+import { colors, fonts, radius, spacing } from '@/src/theme/tokens';
 import { useCart } from '@/src/context/CartContext';
 
 export type ProductLite = {
@@ -26,174 +25,97 @@ export function ProductCard({ product }: { product: ProductLite }) {
   const { addItem, getQuantity, setQuantity } = useCart();
   const variant = product.variants[wIdx];
   const qty = getQuantity(product.id, variant.weight);
-  const hasVariants = product.variants.length > 1;
 
-  const badge = useMemo(
-    () => product.tags.find((x) => ['stone-ground', 'cold-pressed', 'unpolished', 'a2', 'aged', 'bilona', 'single-press'].includes(x)),
-    [product.tags],
-  );
+  const add = () => {
+    Haptics.selectionAsync().catch(() => {});
+    addItem({
+      product_id: product.id,
+      slug: product.slug,
+      name: product.name,
+      image: product.image,
+      variant_weight: variant.weight,
+      unit_price: variant.price,
+    });
+  };
 
   return (
-    <Pressable
-      testID={`product-card-${product.slug}`}
-      onPress={() => router.push(`/product/${product.slug}`)}
-      style={styles.card}
-    >
-      <View style={styles.imageWrap}>
-        <Image source={{ uri: product.image }} style={styles.image} contentFit="cover" transition={220} />
-        {product.purity_certified && (
-          <View style={styles.stamp} pointerEvents="none">
-            <PureStamp size={38} />
-          </View>
-        )}
-        {badge && (
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>{badge.replace('-', ' ').toUpperCase()}</Text>
-          </View>
-        )}
-      </View>
+    <View style={styles.card} testID={`product-card-${product.slug}`}>
+      <Pressable onPress={() => router.push(`/product/${product.slug}`)} testID={`open-product-${product.slug}`}>
+        <View style={styles.imageWrap}>
+          <Image source={{ uri: product.image }} style={styles.image} contentFit="cover" transition={180} />
+          {product.purity_certified && (
+            <View style={styles.qualityBadge} testID={`quality-${product.slug}`}>
+              <Feather name="check-circle" size={10} color={colors.jade} />
+              <Text style={styles.qualityText}>PURE</Text>
+            </View>
+          )}
+        </View>
+      </Pressable>
 
       <View style={styles.body}>
-        <View style={styles.ratingRow}>
+        <View style={styles.etaRow}>
+          <Feather name="clock" size={10} color={colors.jade} />
+          <Text style={styles.eta}>10 MINS</Text>
+          <View style={styles.dot} />
           <Feather name="star" size={10} color={colors.gold} />
-          <Text style={styles.ratingText}>{product.rating}</Text>
-          <View style={styles.ratingDivider} />
-          <Text style={styles.weightHint}>{variant.weight}</Text>
+          <Text style={styles.rating}>{product.rating}</Text>
         </View>
+        <Pressable onPress={() => router.push(`/product/${product.slug}`)} testID={`product-name-${product.slug}`}>
+          <Text style={styles.name} numberOfLines={2}>{product.name}</Text>
+        </Pressable>
 
-        <Text style={styles.name} numberOfLines={2}>{product.name}</Text>
-        <Text style={styles.tag} numberOfLines={1}>{product.tagline}</Text>
-
-        {hasVariants && (
-          <View style={styles.variantRow}>
-            {product.variants.map((v, i) => (
-              <Pressable
-                key={v.weight}
-                testID={`variant-${product.slug}-${v.weight}`}
-                onPress={() => setWIdx(i)}
-                style={[styles.variantPill, i === wIdx && styles.variantPillActive]}
-              >
-                <Text style={[styles.variantText, i === wIdx && styles.variantTextActive]}>{v.weight}</Text>
-              </Pressable>
-            ))}
-          </View>
-        )}
+        <Pressable
+          testID={`variant-${product.slug}`}
+          onPress={() => product.variants.length > 1 && setWIdx((wIdx + 1) % product.variants.length)}
+          style={styles.variant}
+        >
+          <Text style={styles.weight}>{variant.weight}</Text>
+          {product.variants.length > 1 && <Feather name="chevron-down" size={12} color={colors.dust} />}
+        </Pressable>
 
         <View style={styles.footer}>
-          <Text style={styles.price}>₹{variant.price}</Text>
+          <Text style={styles.price} testID={`price-${product.slug}`}>₹{variant.price}</Text>
           {qty === 0 ? (
-            <Pressable
-              testID={`add-${product.slug}`}
-              style={styles.addBtn}
-              hitSlop={6}
-              onPress={() => {
-                Haptics.selectionAsync().catch(() => {});
-                addItem({
-                  product_id: product.id,
-                  slug: product.slug,
-                  name: product.name,
-                  image: product.image,
-                  variant_weight: variant.weight,
-                  unit_price: variant.price,
-                });
-              }}
-            >
-              <Feather name="plus" size={13} color={colors.saffronDark} />
-              <Text style={styles.addBtnText}>ADD</Text>
+            <Pressable testID={`add-${product.slug}`} onPress={add} style={({ pressed }) => [styles.addBtn, pressed && styles.pressed]}>
+              <Text style={styles.addText}>ADD</Text>
             </Pressable>
           ) : (
-            <View style={styles.stepper}>
-              <Pressable
-                testID={`dec-${product.slug}`}
-                onPress={() => setQuantity(product.id, variant.weight, qty - 1)}
-                style={styles.stepBtn}
-                hitSlop={6}
-              >
-                <Feather name="minus" size={14} color={colors.white} />
+            <View style={styles.stepper} testID={`stepper-${product.slug}`}>
+              <Pressable testID={`dec-${product.slug}`} onPress={() => setQuantity(product.id, variant.weight, qty - 1)} style={styles.stepBtn}>
+                <Feather name="minus" size={15} color={colors.white} />
               </Pressable>
-              <Text style={styles.stepperQty}>{qty}</Text>
-              <Pressable
-                testID={`inc-${product.slug}`}
-                onPress={() => setQuantity(product.id, variant.weight, qty + 1)}
-                style={styles.stepBtn}
-                hitSlop={6}
-              >
-                <Feather name="plus" size={14} color={colors.white} />
+              <Text style={styles.qty}>{qty}</Text>
+              <Pressable testID={`inc-${product.slug}`} onPress={() => setQuantity(product.id, variant.weight, qty + 1)} style={styles.stepBtn}>
+                <Feather name="plus" size={15} color={colors.white} />
               </Pressable>
             </View>
           )}
         </View>
       </View>
-    </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    flex: 1,
-    backgroundColor: colors.white,
-    borderRadius: radius.xl,
-    borderWidth: 1,
-    borderColor: colors.border,
-    overflow: 'hidden',
-  },
-  imageWrap: {
-    backgroundColor: colors.creamDeep,
-    aspectRatio: 1,
-    position: 'relative',
-  },
+  card: { flex: 1, backgroundColor: colors.white, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
+  imageWrap: { aspectRatio: 1.08, backgroundColor: colors.creamDeep, position: 'relative' },
   image: { width: '100%', height: '100%' },
-  stamp: { position: 'absolute', top: spacing.sm, right: spacing.sm },
-  badge: {
-    position: 'absolute',
-    left: spacing.sm,
-    bottom: spacing.sm,
-    backgroundColor: 'rgba(36, 26, 16, 0.9)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: radius.sm,
-  },
-  badgeText: { color: colors.goldSoft, fontSize: 8, letterSpacing: 1.1, fontFamily: fonts.bodyBold },
-  body: { padding: spacing.md, paddingTop: 10, gap: 3 },
-  ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 2 },
-  ratingText: { fontFamily: fonts.bodyBold, fontSize: 11, color: colors.earth },
-  ratingDivider: { width: 3, height: 3, borderRadius: 2, backgroundColor: colors.dustLight, marginHorizontal: 2 },
-  weightHint: { fontFamily: fonts.bodyMedium, fontSize: 11, color: colors.dust },
-  name: { fontFamily: fonts.bodySemibold, fontSize: 14, lineHeight: 18, color: colors.earth },
-  tag: { fontFamily: fonts.body, fontSize: 11.5, lineHeight: 15, color: colors.dust, marginBottom: 2 },
-  variantRow: { flexDirection: 'row', gap: 5, marginTop: 5, flexWrap: 'wrap' },
-  variantPill: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: radius.pill,
-    backgroundColor: colors.cream,
-  },
-  variantPillActive: { borderColor: colors.earth, backgroundColor: colors.earth },
-  variantText: { fontFamily: fonts.bodyMedium, fontSize: 10.5, color: colors.dust },
-  variantTextActive: { color: colors.white, fontFamily: fonts.bodySemibold },
-  footer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
-  price: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.earth },
-  addBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2,
-    backgroundColor: colors.saffronTint,
-    borderWidth: 1,
-    borderColor: colors.saffron,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: radius.md,
-  },
-  addBtnText: { color: colors.saffronDark, fontFamily: fonts.bodyBold, fontSize: 12, letterSpacing: 0.8 },
-  stepper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.saffron,
-    borderRadius: radius.md,
-    paddingHorizontal: 3,
-  },
-  stepBtn: { paddingHorizontal: 7, paddingVertical: 6 },
-  stepperQty: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 13, minWidth: 16, textAlign: 'center' },
+  qualityBadge: { position: 'absolute', top: 7, left: 7, flexDirection: 'row', alignItems: 'center', gap: 3, paddingHorizontal: 6, paddingVertical: 4, borderRadius: 6, backgroundColor: colors.white },
+  qualityText: { color: colors.jade, fontFamily: fonts.bodyBold, fontSize: 8, letterSpacing: 0.4 },
+  body: { padding: 9 },
+  etaRow: { height: 16, flexDirection: 'row', alignItems: 'center', gap: 3 },
+  eta: { color: colors.jade, fontFamily: fonts.bodyBold, fontSize: 8.5 },
+  dot: { width: 3, height: 3, borderRadius: 2, backgroundColor: colors.border, marginHorizontal: 2 },
+  rating: { color: colors.dust, fontFamily: fonts.bodySemibold, fontSize: 9.5 },
+  name: { color: colors.earth, fontFamily: fonts.bodySemibold, fontSize: 12.5, lineHeight: 17, height: 35, marginTop: 2 },
+  variant: { minHeight: 30, flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', gap: 2 },
+  weight: { color: colors.dust, fontFamily: fonts.bodyMedium, fontSize: 10.5 },
+  footer: { minHeight: 44, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 },
+  price: { color: colors.earth, fontFamily: fonts.bodyBold, fontSize: 14 },
+  addBtn: { width: 72, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 9, borderWidth: 1.5, borderColor: colors.saffron, backgroundColor: colors.saffronTint },
+  addText: { color: colors.saffronDark, fontFamily: fonts.bodyBold, fontSize: 12 },
+  pressed: { opacity: 0.75, transform: [{ scale: 0.96 }] },
+  stepper: { width: 92, height: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderRadius: 9, backgroundColor: colors.saffron },
+  stepBtn: { width: 34, height: 40, alignItems: 'center', justifyContent: 'center' },
+  qty: { color: colors.white, fontFamily: fonts.bodyBold, fontSize: 12 },
 });

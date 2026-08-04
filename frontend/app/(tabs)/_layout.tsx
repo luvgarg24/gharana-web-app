@@ -9,44 +9,49 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.earth,
+        tabBarActiveTintColor: colors.saffron,
         tabBarInactiveTintColor: colors.dust,
         tabBarStyle: {
           backgroundColor: colors.white,
           borderTopColor: colors.border,
           borderTopWidth: 1,
-          paddingTop: 6,
-          height: 68,
+          paddingTop: 7,
+          height: 72,
+          elevation: 8,
+          shadowColor: '#111827',
+          shadowOpacity: 0.07,
+          shadowRadius: 10,
+          shadowOffset: { width: 0, height: -2 },
         },
-        tabBarLabelStyle: { fontSize: 10.5, letterSpacing: 0.4, fontFamily: fonts.bodySemibold },
+        tabBarLabelStyle: { fontSize: 10, fontFamily: fonts.bodySemibold, marginTop: 1 },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => <Feather name="home" color={color} size={size} />,
+          tabBarIcon: ({ color }) => <Feather name="home" color={color} size={21} />,
         }}
       />
       <Tabs.Screen
         name="categories"
         options={{
           title: 'Shop',
-          tabBarIcon: ({ color, size }) => <Feather name="grid" color={color} size={size} />,
+          tabBarIcon: ({ color }) => <Feather name="grid" color={color} size={21} />,
         }}
       />
       <Tabs.Screen
         name="cart"
         options={{
           title: 'Cart',
-          tabBarIcon: ({ color, size }) => <CartTabIcon color={color} size={size} />,
+          tabBarIcon: ({ color }) => <CartTabIcon color={color} size={21} />,
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
           title: 'Account',
-          tabBarIcon: ({ color, size }) => <Feather name="user" color={color} size={size} />,
+          tabBarIcon: ({ color }) => <Feather name="user" color={color} size={21} />,
         }}
       />
     </Tabs>

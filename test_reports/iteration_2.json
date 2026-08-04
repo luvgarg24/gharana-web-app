@@ -1,0 +1,66 @@
+{
+  "summary": "Frontend-only regression executed on public preview URL at mobile 390x844. Login, Home sections (ETA/search/promos/category grid/rails), Shop category switching, Search input flow, Account modules, bottom-tab usability, and Cart->Checkout navigation were tested. A critical integration issue remains on Shop product-card ADD/floating-cart/cart state; product add from direct product page works.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Shop product card",
+        "issue": "Tapping product ADD on /categories did not transition card to quantity stepper and floating cart bar did not appear; cart remained empty from this flow.",
+        "testID": "add-* / stepper-* / floating-view-cart",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "External product image",
+        "issue": "One product image URL returns 404 in console.",
+        "testID": "product-card-*",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Shop -> ProductCard ADD -> Floating cart -> Cart",
+        "issue": "State update from ProductCard ADD appears broken in Shop route; same user session can add to cart from direct product page and checkout successfully.",
+        "affected_testIDs": ["add-*", "floating-view-cart", "cart-screen"]
+      }
+    ],
+    "design_issues": [],
+    "react_native_issues": [
+      {
+        "component": "RN Web runtime",
+        "issue": "Console warnings: deprecated shadow* props and props.pointerEvents usage."
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_boot_login.jpg",
+    "/app/test_reports/iteration_ui_regression_mobile.jpg",
+    "/app/test_reports/iteration_ui_final_run.jpg",
+    "/root/.emergent/automation_output/20260804_113942/console_20260804_113942.log"
+  ],
+  "action_items": [
+    "Fix Shop ProductCard ADD integration so quantity stepper + floating cart appear and cart updates from categories flow.",
+    "Re-verify product detail controls/back flow with stable selectors (pd-back/product-detail-name visibility was inconsistent in web automation despite route opening).",
+    "Replace/remove broken external image URL(s) causing 404.",
+    "(Optional) Address RN-web deprecation warnings for shadow and pointerEvents usage."
+  ],
+  "critical_code_review_comments": [
+    "app/_layout.tsx uses LogBox.ignoreAllLogs(true), which can hide real runtime issues during QA.",
+    "src/api/client.ts uses EXPO_PUBLIC_BACKEND_URL; confirm env contract alignment with platform guidelines to avoid config drift.",
+    "ProductCard has correct testIDs, but observed runtime behavior suggests event/state propagation issue specific to categories interaction path."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_2.json"
+  ],
+  "success_rate": {
+    "backend": "NA (frontend-only scope)",
+    "frontend": "~75% critical flows passed; 1 critical integration flow failed"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Credentials verified from /app/memory/test_credentials.md: test@gharana.in / Test@1234. Product detail route opens via open-product-* click (URL changes to /product/<slug>). Direct product add-to-cart and /cart -> checkout works. Failure is specific to Shop ProductCard ADD -> cart state/floating bar path.",
+  "rca_of_issue": "Reproduced three times: On /categories, clicking add-* succeeds visually as click action but no resulting stepper/floating cart/cart item. In same session, adding from /product/chakki-whole-wheat-atta works and checkout navigation passes (/checkout?delivery=express&promo=). Likely route-specific UI state update/integration issue in ProductCard usage inside categories list/virtualization path."
+}
